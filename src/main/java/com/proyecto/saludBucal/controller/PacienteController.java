@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +17,10 @@ import com.proyecto.saludBucal.dto.response.PacienteResponse;
 import com.proyecto.saludBucal.service.PacienteService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequestMapping("/api/pacientes")
 @RequiredArgsConstructor
@@ -55,7 +58,12 @@ public class PacienteController {
 
     @GetMapping("/dni/{dni}")
     public ResponseEntity<PacienteResponse> buscarPacientePorDni(
-            @PathVariable String dni) {
+    		 @PathVariable
+    	        @Pattern(
+    	            regexp = "^[0-9]{8}$",
+    	            message = "El DNI debe contener exactamente 8 dígitos"
+    	        )
+    	        String dni) {
 
         return ResponseEntity.ok(
                 pacienteService.buscarPacientePorDni(dni)
