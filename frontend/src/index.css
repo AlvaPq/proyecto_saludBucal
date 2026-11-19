@@ -64,3 +64,35 @@ button:disabled {
 .error {
   color: #a61c27;
 }
+
+.boton-consulta {
+  margin-bottom: 1rem;
+}
+
+.consulta-pacientes {
+  width: min(44rem, calc(100% - 5rem));
+}
+
+.buscador-pacientes {
+  margin: 1.25rem 0;
+}
+
+.tabla-pacientes {
+  overflow-x: auto;
+}
+
+.tabla-pacientes table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-pacientes th,
+.tabla-pacientes td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #d2e2df;
+  text-align: left;
+}
+
+.tabla-pacientes th {
+  background: #f0f6f5;
+}

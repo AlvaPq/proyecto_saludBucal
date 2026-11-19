@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import ConsultarPacientes from './ConsultarPacientes.jsx'
 
 export default function App() {
   const [guardando, setGuardando] = useState(false)
   const [confirmacion, setConfirmacion] = useState('')
   const [error, setError] = useState('')
+  const [mostrarConsulta, setMostrarConsulta] = useState(false)
 
   async function registrarPaciente(evento) {
     evento.preventDefault()
@@ -57,11 +59,24 @@ export default function App() {
     } finally {
       setGuardando(false)
     }
+	
   }
+  
+  if (mostrarConsulta) {
+  	  return <ConsultarPacientes volver={() => setMostrarConsulta(false)} />
+  	}
 
   return (
     <main>
       <h1>Registrar paciente</h1>
+	  
+	  <button
+	    className="boton-consulta"
+	    type="button"
+	    onClick={() => setMostrarConsulta(true)}
+	  >
+	    Consultar pacientes
+	  </button>
 
       <form onSubmit={registrarPaciente}>
         <label>
