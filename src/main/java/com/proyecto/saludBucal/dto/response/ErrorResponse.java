@@ -12,12 +12,8 @@ import lombok.*;
 public class ErrorResponse {
 
     private LocalDateTime fecha;
-
     private int status;
-
     private String error;
-
     private String mensaje;
-
     private Map<String, String> detalles;
 }

@@ -49,7 +49,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> manejarValidaciones(
             MethodArgumentNotValidException ex) {
-
         Map<String, String> detalles = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -66,7 +65,6 @@ public class GlobalExceptionHandler {
                 .mensaje("Los datos enviados no son válidos")
                 .detalles(detalles)
                 .build();
-
         return ResponseEntity.badRequest().body(error);
     }
     
@@ -89,7 +87,76 @@ public class GlobalExceptionHandler {
                 .mensaje("Los datos enviados no son válidos")
                 .detalles(detalles)
                 .build();
-
         return ResponseEntity.badRequest().body(error);
+    }
+    @ExceptionHandler(OdontologoDniDuplicadoException.class)
+    public ResponseEntity<ErrorResponse> manejarOdontologoDniDuplicado(
+            OdontologoDniDuplicadoException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.CONFLICT.value())
+                .error("Conflicto")
+                .mensaje(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(OdontologoNoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> manejarOdontologoNoEncontrado(
+            OdontologoNoEncontradoException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error("No encontrado")
+                .mensaje(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+    @ExceptionHandler(CitaNoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> manejarCitaNoEncontrada(
+            CitaNoEncontradaException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error("Cita no encontrada")
+                .mensaje(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(HorarioOcupadoException.class)
+    public ResponseEntity<ErrorResponse> manejarHorarioOcupado(
+            HorarioOcupadoException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.CONFLICT.value())
+                .error("Horario ocupado")
+                .mensaje(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(EstadoCitaInvalidoException.class)
+    public ResponseEntity<ErrorResponse> manejarEstadoCitaInvalido(
+            EstadoCitaInvalidoException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.CONFLICT.value())
+                .error("Estado de cita inválido")
+                .mensaje(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(FechaCitaInvalidaException.class)
+    public ResponseEntity<ErrorResponse> manejarFechaCitaInvalida(
+            FechaCitaInvalidaException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Fecha inválida")
+                .mensaje(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
