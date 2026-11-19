@@ -1,0 +1,66 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #173333;
+  background: #f0f6f5;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  width: min(28rem, calc(100% - 5rem));
+  margin: 3rem auto;
+  padding: 2rem;
+  border: 1px solid #d2e2df;
+  border-radius: 1rem;
+  background: white;
+}
+
+h1 {
+  margin: 0 0 1.5rem;
+}
+
+form,
+label {
+  display: grid;
+  gap: 0.5rem;
+}
+
+form {
+  gap: 1rem;
+}
+
+input,
+button {
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  font: inherit;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #849f9a;
+}
+
+button {
+  border: 0;
+  background: #12655b;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.confirmacion {
+  color: #176148;
+}
+
+.error {
+  color: #a61c27;
+}
