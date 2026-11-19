@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import ConsultarPacientes from './ConsultarPacientes.jsx'
+import ProgramarCita from './ProgramarCita.jsx'
 
 export default function App() {
   const [guardando, setGuardando] = useState(false)
   const [confirmacion, setConfirmacion] = useState('')
   const [error, setError] = useState('')
-  const [mostrarConsulta, setMostrarConsulta] = useState(false)
+  const [pantalla, setPantalla] = useState('registro')
 
   async function registrarPaciente(evento) {
     evento.preventDefault()
@@ -62,21 +63,25 @@ export default function App() {
 	
   }
   
-  if (mostrarConsulta) {
-  	  return <ConsultarPacientes volver={() => setMostrarConsulta(false)} />
-  	}
+  if (pantalla === 'consulta') {
+    return <ConsultarPacientes volver={() => setPantalla('registro')} />
+  }
+
+  if (pantalla === 'cita') {
+    return <ProgramarCita volver={() => setPantalla('registro')} />
+  }
 
   return (
     <main>
       <h1>Registrar paciente</h1>
-	  
-	  <button
-	    className="boton-consulta"
-	    type="button"
-	    onClick={() => setMostrarConsulta(true)}
-	  >
-	    Consultar pacientes
-	  </button>
+      <nav className="navegacion-pacientes" aria-label="Módulos">
+        <button type="button" onClick={() => setPantalla('consulta')}>
+          Consultar pacientes
+        </button>
+        <button type="button" onClick={() => setPantalla('cita')}>
+          Programar cita
+        </button>
+      </nav>
 
       <form onSubmit={registrarPaciente}>
         <label>
