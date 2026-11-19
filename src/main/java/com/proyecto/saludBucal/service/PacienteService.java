@@ -8,12 +8,8 @@ import com.proyecto.saludBucal.dto.response.PacienteResponse;
 public interface PacienteService {
 
     PacienteResponse registrarPaciente(PacienteRequest request);
-    
     List<PacienteResponse> listarPacientes();
-
-
     PacienteResponse buscarPacientePorId(Integer id);
-
     PacienteResponse buscarPacientePorDni(String dni);
 
 }
