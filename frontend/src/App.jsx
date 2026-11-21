@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import ConsultarPacientes from './ConsultarPacientes.jsx'
 import ProgramarCita from './ProgramarCita.jsx'
+import RegistrarAtencion from './RegistrarAtencion.jsx'
+import HistorialAtenciones from './HistorialAtenciones.jsx'
 
 export default function App() {
   const [guardando, setGuardando] = useState(false)
@@ -11,7 +13,7 @@ export default function App() {
   async function registrarPaciente(evento) {
     evento.preventDefault()
 
-    const formulario = evento.currentTarget
+    const formulario = evento.currentTarget 
     const campos = new FormData(formulario)
     const paciente = {
       dni: campos.get('dni').trim(),
@@ -70,6 +72,12 @@ export default function App() {
   if (pantalla === 'cita') {
     return <ProgramarCita volver={() => setPantalla('registro')} />
   }
+  if (pantalla === 'atencion') {
+  return <RegistrarAtencion volver={() => setPantalla('registro')} />
+}
+if (pantalla === 'historial') {
+  return <HistorialAtenciones volver={() => setPantalla('registro')} />
+}
 
   return (
     <main>
@@ -80,6 +88,12 @@ export default function App() {
         </button>
         <button type="button" onClick={() => setPantalla('cita')}>
           Programar cita
+        </button>
+        <button type="button" onClick={() => setPantalla('atencion')}>
+          Registrar atención
+        </button>
+        <button type="button" onClick={() => setPantalla('historial')}>
+          Consultar historial clínico
         </button>
       </nav>
 
