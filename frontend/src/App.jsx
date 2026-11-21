@@ -19,7 +19,6 @@ export default function App() {
             <div>
               <h1>Salud Bucal</h1>
             </div>
-            <span className="app-badge-avance">1er Avance</span>
           </div>
 
           <nav className="app-nav" aria-label="Navegación principal">
