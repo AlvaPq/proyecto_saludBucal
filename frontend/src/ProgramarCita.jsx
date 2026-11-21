@@ -93,10 +93,14 @@ export default function ProgramarCita({ volver }) {
 
   return (
     <main className="programar-cita">
-      <h1>Programar cita</h1>
-      <button type="button" onClick={volver} disabled={guardando}>
-        Volver al registro
-      </button>
+      <div className="encabezado-seccion">
+        <h1>Programar cita</h1>
+        {volver && (
+          <button type="button" className="btn-secundario" onClick={volver} disabled={guardando}>
+            ← Ver Citas
+          </button>
+        )}
+      </div>
 
       {cargando && <p role="status">Cargando pacientes y odontólogos…</p>}
       {!cargando && !error && !hayOpciones && (

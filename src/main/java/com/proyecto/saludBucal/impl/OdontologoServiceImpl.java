@@ -2,6 +2,7 @@ package com.proyecto.saludBucal.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.saludBucal.dto.request.OdontologoRequest;
 import com.proyecto.saludBucal.dto.response.OdontologoResponse;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OdontologoServiceImpl implements OdontologoService {
 
     private final OdontologoRepository odontologoRepository;
@@ -35,6 +37,7 @@ public class OdontologoServiceImpl implements OdontologoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OdontologoResponse> listarOdontologos() {
         return odontologoRepository.findAll()
                 .stream()
@@ -43,6 +46,7 @@ public class OdontologoServiceImpl implements OdontologoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OdontologoResponse buscarOdontologoPorId(Integer id) {
         Odontologo odontologo = odontologoRepository.findById(id)
                 .orElseThrow(() -> new OdontologoNoEncontradoException(
@@ -52,6 +56,7 @@ public class OdontologoServiceImpl implements OdontologoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OdontologoResponse buscarOdontologoPorDni(String dni) {
         Odontologo odontologo = odontologoRepository.findByDni(dni)
                 .orElseThrow(() -> new OdontologoNoEncontradoException(

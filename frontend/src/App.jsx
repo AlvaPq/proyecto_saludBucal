@@ -1,131 +1,157 @@
 import { useState } from 'react'
+import RegistrarPaciente from './RegistrarPaciente.jsx'
 import ConsultarPacientes from './ConsultarPacientes.jsx'
+import RegistrarOdontologo from './RegistrarOdontologo.jsx'
 import ProgramarCita from './ProgramarCita.jsx'
+import ConsultarCitas from './ConsultarCitas.jsx'
 import RegistrarAtencion from './RegistrarAtencion.jsx'
 import HistorialAtenciones from './HistorialAtenciones.jsx'
 
 export default function App() {
-  const [guardando, setGuardando] = useState(false)
-  const [confirmacion, setConfirmacion] = useState('')
-  const [error, setError] = useState('')
-  const [pantalla, setPantalla] = useState('registro')
-
-  async function registrarPaciente(evento) {
-    evento.preventDefault()
-
-    const formulario = evento.currentTarget 
-    const campos = new FormData(formulario)
-    const paciente = {
-      dni: campos.get('dni').trim(),
-      nombres: campos.get('nombres').trim(),
-      apellidos: campos.get('apellidos').trim(),
-      edad: Number(campos.get('edad')),
-    }
-
-    setConfirmacion('')
-    setError('')
-
-    if (!paciente.nombres || !paciente.apellidos) {
-      setError('Completa los nombres y apellidos del paciente.')
-      return
-    }
-
-    setGuardando(true)
-
-    try {
-      const respuesta = await fetch('/api/pacientes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(paciente),
-      })
-
-      if (respuesta.status === 201) {
-        formulario.reset()
-        setConfirmacion(
-          `Paciente ${paciente.nombres} ${paciente.apellidos} registrado correctamente.`,
-        )
-        return
-      }
-
-      const datos = await respuesta.json().catch(() => null)
-
-      if (respuesta.status === 409) {
-        setError(datos?.mensaje || 'Ya existe un paciente con ese DNI.')
-      } else if (respuesta.status === 400) {
-        const detalles = Object.values(datos?.detalles ?? {}).join(' ')
-        setError(detalles || datos?.mensaje || 'Revisa los datos ingresados.')
-      } else {
-        setError('No se pudo guardar el paciente. Revisa que Spring Boot esté en ejecución.')
-      }
-    } catch {
-      setError('No se pudo conectar con el servidor. Inténtalo de nuevo.')
-    } finally {
-      setGuardando(false)
-    }
-	
-  }
-  
-  if (pantalla === 'consulta') {
-    return <ConsultarPacientes volver={() => setPantalla('registro')} />
-  }
-
-  if (pantalla === 'cita') {
-    return <ProgramarCita volver={() => setPantalla('registro')} />
-  }
-  if (pantalla === 'atencion') {
-  return <RegistrarAtencion volver={() => setPantalla('registro')} />
-}
-if (pantalla === 'historial') {
-  return <HistorialAtenciones volver={() => setPantalla('registro')} />
-}
+  const [pantalla, setPantalla] = useState('citas')
 
   return (
-    <main>
-      <h1>Registrar paciente</h1>
-      <nav className="navegacion-pacientes" aria-label="Módulos">
-        <button type="button" onClick={() => setPantalla('consulta')}>
-          Consultar pacientes
-        </button>
-        <button type="button" onClick={() => setPantalla('cita')}>
-          Programar cita
-        </button>
-        <button type="button" onClick={() => setPantalla('atencion')}>
-          Registrar atención
-        </button>
-        <button type="button" onClick={() => setPantalla('historial')}>
-          Consultar historial clínico
-        </button>
-      </nav>
+    <div className="app-layout">
+      <header className="app-header">
+        <div className="app-header-contenido">
+          <div className="app-branding">
+            <span style={{ fontSize: '1.7rem' }}>🦷</span>
+            <div>
+              <h1>Salud Bucal</h1>
+            </div>
+            <span className="app-badge-avance">1er Avance</span>
+          </div>
 
-      <form onSubmit={registrarPaciente}>
-        <label>
-          DNI
-          <input name="dni" inputMode="numeric" pattern="[0-9]{8}"
-            maxLength={8} title="Ingresa los 8 dígitos del DNI" required />
-        </label>
+          <nav className="app-nav" aria-label="Navegación principal">
+            <button
+              type="button"
+              className={`nav-btn ${pantalla === 'citas' || pantalla === 'programar-cita' ? 'activo' : ''}`}
+              onClick={() => setPantalla('citas')}
+            >
+              📅 Citas
+            </button>
+            <button
+              type="button"
+              className={`nav-btn ${pantalla === 'registro-paciente' || pantalla === 'consulta-pacientes' ? 'activo' : ''}`}
+              onClick={() => setPantalla('consulta-pacientes')}
+            >
+              👤 Pacientes
+            </button>
+            <button
+              type="button"
+              className={`nav-btn ${pantalla === 'odontologos' ? 'activo' : ''}`}
+              onClick={() => setPantalla('odontologos')}
+            >
+              👨‍⚕️ Odontólogos
+            </button>
+            <button
+              type="button"
+              className={`nav-btn ${pantalla === 'atencion' || pantalla === 'historial' ? 'activo' : ''}`}
+              onClick={() => setPantalla('historial')}
+            >
+              📋 Atenciones
+            </button>
+          </nav>
+        </div>
+      </header>
 
-        <label>
-          Nombres
-          <input name="nombres" maxLength={100} required />
-        </label>
+      {/* Sub-barra de acciones contextuales según el módulo activo */}
+      <div style={{ background: '#e4eee9', borderBottom: '1px solid #cfe0dc', padding: '0.4rem 2rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {(pantalla === 'citas' || pantalla === 'programar-cita') && (
+            <>
+              <button
+                type="button"
+                className={`btn-sm ${pantalla === 'citas' ? 'btn-secundario' : ''}`}
+                style={pantalla === 'citas' ? { fontWeight: 700 } : { background: 'transparent', color: '#173333' }}
+                onClick={() => setPantalla('citas')}
+              >
+                Ver Citas Programadas
+              </button>
+              <button
+                type="button"
+                className={`btn-sm ${pantalla === 'programar-cita' ? 'btn-secundario' : ''}`}
+                style={pantalla === 'programar-cita' ? { fontWeight: 700 } : { background: 'transparent', color: '#173333' }}
+                onClick={() => setPantalla('programar-cita')}
+              >
+                + Programar Cita
+              </button>
+            </>
+          )}
 
-        <label>
-          Apellidos
-          <input name="apellidos" maxLength={100} required />
-        </label>
+          {(pantalla === 'registro-paciente' || pantalla === 'consulta-pacientes') && (
+            <>
+              <button
+                type="button"
+                className={`btn-sm ${pantalla === 'consulta-pacientes' ? 'btn-secundario' : ''}`}
+                style={pantalla === 'consulta-pacientes' ? { fontWeight: 700 } : { background: 'transparent', color: '#173333' }}
+                onClick={() => setPantalla('consulta-pacientes')}
+              >
+                Consultar Pacientes
+              </button>
+              <button
+                type="button"
+                className={`btn-sm ${pantalla === 'registro-paciente' ? 'btn-secundario' : ''}`}
+                style={pantalla === 'registro-paciente' ? { fontWeight: 700 } : { background: 'transparent', color: '#173333' }}
+                onClick={() => setPantalla('registro-paciente')}
+              >
+                + Registrar Paciente
+              </button>
+            </>
+          )}
 
-        <label>
-          Edad
-          <input name="edad" type="number" min={0} step={1} required />
-        </label>
+          {(pantalla === 'atencion' || pantalla === 'historial') && (
+            <>
+              <button
+                type="button"
+                className={`btn-sm ${pantalla === 'historial' ? 'btn-secundario' : ''}`}
+                style={pantalla === 'historial' ? { fontWeight: 700 } : { background: 'transparent', color: '#173333' }}
+                onClick={() => setPantalla('historial')}
+              >
+                Consultar Historial Clínico
+              </button>
+              <button
+                type="button"
+                className={`btn-sm ${pantalla === 'atencion' ? 'btn-secundario' : ''}`}
+                style={pantalla === 'atencion' ? { fontWeight: 700 } : { background: 'transparent', color: '#173333' }}
+                onClick={() => setPantalla('atencion')}
+              >
+                + Registrar Nueva Atención
+              </button>
+            </>
+          )}
+        </div>
+      </div>
 
-        <button type="submit" disabled={guardando}>
-          {guardando ? 'Guardando…' : 'Guardar paciente'}
-        </button>
-      </form>
+      <div className="app-cuerpo">
+        {pantalla === 'registro-paciente' && (
+          <RegistrarPaciente irAConsulta={() => setPantalla('consulta-pacientes')} />
+        )}
 
-      {confirmacion && <p className="confirmacion" role="status">{confirmacion}</p>}
-      {error && <p className="error" role="alert">{error}</p>}
-    </main>
+        {pantalla === 'consulta-pacientes' && (
+          <ConsultarPacientes volver={() => setPantalla('registro-paciente')} />
+        )}
+
+        {pantalla === 'odontologos' && (
+          <RegistrarOdontologo />
+        )}
+
+        {pantalla === 'citas' && (
+          <ConsultarCitas irAProgramar={() => setPantalla('programar-cita')} />
+        )}
+
+        {pantalla === 'programar-cita' && (
+          <ProgramarCita volver={() => setPantalla('citas')} />
+        )}
+
+        {pantalla === 'atencion' && (
+          <RegistrarAtencion volver={() => setPantalla('historial')} />
+        )}
+
+        {pantalla === 'historial' && (
+          <HistorialAtenciones volver={() => setPantalla('atencion')} />
+        )}
+      </div>
+    </div>
   )
 }

@@ -8,10 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "pacientes")
 @NoArgsConstructor
@@ -19,23 +21,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Paciente {
 	
-@Id
-@GeneratedValue( strategy = GenerationType.IDENTITY)
-private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-@Column(nullable = false, unique = true, length = 20)
-private String dni;
+	@Column(nullable = false, unique = true, length = 20)
+	private String dni;
 
-@Column(nullable = false, length = 100)
-private String nombre;
+	@Column(nullable = false, length = 100)
+	private String nombre;
 
-@Column(nullable = false, length = 200)
-private String apellidos;
+	@Column(nullable = false, length = 200)
+	private String apellidos;
 
-@Column(nullable =false, length = 200)
-private Integer edad;
-
-
-	
-	
+	@Column(nullable = false)
+	private Integer edad;
 }

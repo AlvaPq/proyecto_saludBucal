@@ -52,11 +52,14 @@ export default function ConsultarPacientes({ volver }) {
 
   return (
     <main className="consulta-pacientes">
-      <h1>Consultar pacientes</h1>
-
-      <button type="button" onClick={volver}>
-        Volver al registro
-      </button>
+      <div className="encabezado-seccion">
+        <h1>Consultar pacientes</h1>
+        {volver && (
+          <button type="button" className="btn-secundario" onClick={volver}>
+            + Nuevo Paciente
+          </button>
+        )}
+      </div>
 
       <label className="buscador-pacientes">
         Buscar por DNI, nombre o apellido

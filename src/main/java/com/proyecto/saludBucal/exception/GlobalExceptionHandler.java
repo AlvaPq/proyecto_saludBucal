@@ -159,4 +159,15 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> manejarExcepcionGeneral(Exception ex) {
+        ErrorResponse error = ErrorResponse.builder()
+                .fecha(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error("Error interno del servidor")
+                .mensaje(ex.getMessage() != null ? ex.getMessage() : "Ocurrió un error inesperado")
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
 }

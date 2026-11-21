@@ -55,12 +55,15 @@ export default function HistorialAtenciones({ volver }) {
   }
 
   return (
-    <main className="historial-atenciones">
-      <h1>Historial clínico</h1>
-
-      <button type="button" onClick={volver} disabled={buscando}>
-        Volver al menú
-      </button>
+    <main className="seccion-amplia">
+      <div className="encabezado-seccion">
+        <h1>Historial clínico del paciente</h1>
+        {volver && (
+          <button type="button" className="btn-secundario" onClick={volver} disabled={buscando}>
+            + Nueva Atención
+          </button>
+        )}
+      </div>
 
       <form onSubmit={buscarHistorial}>
         <label htmlFor="tipo-busqueda">

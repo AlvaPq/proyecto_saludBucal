@@ -86,12 +86,15 @@ export default function RegistrarAtencion({ volver }) {
   }
 
   return (
-    <main className="registrar-atencion">
-      <h1>Registrar atención</h1>
-
-      <button type="button" onClick={volver} disabled={guardando}>
-        Volver al menú
-      </button>
+    <main className="seccion-amplia">
+      <div className="encabezado-seccion">
+        <h1>Registrar atención clínica</h1>
+        {volver && (
+          <button type="button" className="btn-secundario" onClick={volver} disabled={guardando}>
+            ← Ver Historial
+          </button>
+        )}
+      </div>
 
       {cargando && (
         <p role="status">Cargando pacientes…</p>
